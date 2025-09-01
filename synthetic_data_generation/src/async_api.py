@@ -8,8 +8,9 @@ from tqdm.asyncio import tqdm_asyncio, tqdm
 API_BASE_URL = "https://inference.airi.net:46783/v1"
 API_KEY = ""
 HTTPX_CLIENT = httpx.AsyncClient(verify=False)
-MAX_CONCURRENT = 20
+MAX_CONCURRENT = 16
 SEM = asyncio.Semaphore(MAX_CONCURRENT)
+BATCH_GATHER_SIZE = MAX_CONCURRENT * 2  # Number of dialogues per async gather batch (limits memory usage)
 
 def async_timer(func):
     @wraps(func)
@@ -51,7 +52,7 @@ async def limited_streaming_query(messages: list[dict], model: str) -> dict:
 	async with SEM:
 		return await streaming_query(messages, model)
 
-async def batched_streaming_query(dialogues: list[list[dict]], model: str = "Deepseek-ai/DeepSeek-R1-Distill-Llama-70B", batch_size: int = 5) -> list[dict]:
+async def batched_streaming_query(dialogues: list[list[dict]], model: str, batch_size: int = BATCH_GATHER_SIZE) -> list[dict]:
     tasks = [limited_streaming_query(dialogue, model) for dialogue in dialogues]
     results = []
     for i in tqdm(range(0, len(tasks), batch_size)):
