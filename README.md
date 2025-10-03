@@ -1,19 +1,12 @@
-# Gender Prediction ML Homework
+# ML Course Homework: Gender Prediction from Transactions
 
 ## Task Overview
 
 The goal of this homework is to **predict customer gender** based on their transaction history.  
 You will need to **aggregate transaction data into features**, train various machine learning models, and evaluate their performance.  
 
-**Baseline Goal:**  
-- Achieve at least **0.87 ROC-AUC** on the test set.  
 
-**Additional Challenges (Extra Points):**  
-- Implement and test **RNN-based models** on raw transaction sequences.  
-- Try **tabular LLM approaches** to leverage the full dataset without aggregation.  
-- Implement a **custom ROC-AUC function** (instead of relying only on sklearn).  
-- Add **assertions** on `X.shape` and data sanity checks.  
-
+- **Baseline Goal:** Achieve at least **0.86 ROC-AUC** on the test set.  
 ---
 
 ## 📊 Dataset Details  
@@ -76,37 +69,56 @@ python download_dataset.py
 
 This will save the dataset to `./data`.
 
----
+## Full Task Description
 
-## 🛠 Feature Engineering Recommendations
+All the code you need should be written in gender_prediction.ipynb, and all the supporting scripts and infrastructure are included here.
 
-* Fill missing values in `term_id` with `-1`.
-* Parse `tr_datetime` into datetime and extract derived features (day, month, weekday, etc.).
-* Aggregate statistics per customer:
 
-  * Numeric: `count`, `sum`, `mean`, `std`, `min`, `max`.
-  * Categorical: number of unique values (`term_id`, `mcc_code`, `tr_type`).
-* Temporal features: earliest/latest transaction, transaction span, number of unique days.
-* Frequencies of top merchant categories and transaction types.
-* Merge all features into `X` and prepare `y` (target gender).
 
----
-
-## 🤖 Model Training
-
-* Split data by `customer_id` into train/val/test (70/10/20).
-* Start with **XGBoost** and add **GridSearchCV** for hyperparameter tuning.
-* Visualize grid search performance.
-* Try different models:
-
-  * Logistic Regression / Linear SVM
-  * Decision Trees / Random Forest
-  * Gradient Boosting (XGBoost, CatBoost, LightGBM)
-  * RNN-based models on transaction sequences
-  * Tabular LLM approaches
+### 1. 🛠 Feature Engineering
+- Improve the aggregation function for transactions.  
+- Suggested improvements:
+  - Add more amount-based statistics (mean, std, min, max, quantiles, etc.)
+  - Capture temporal patterns (time of day, day of week, number of transactions per week/month)
+  - Improve the representation of transaction types and MCC codes  
+    - Options: categorical encoding, text embeddings  
 
 ---
 
-## 📈 Evaluation
+### 2. 📈 Model Training & Evaluation
+- Train and compare multiple algorithms:
+  - Random Forest
+  - Support Vector Machine (SVM)
+  - XGBoost / CatBoost
+  - Neural net models
+  - RNNs (LSTM/GRU)
+  - Tabular transformers (optional)
+- Perform hyperparameter tuning using GridSearchCV or RandomizedSearchCV
+- Visualize the results of the hyperparameter search
+- Goal: achieve ROC AUC > 0.86
 
-Metrics: **ROC-AUC** must exceed 0.87
+---
+
+### 3. Extra Points (Optional)
+- Experiment with full transaction sequences instead of aggregated features:
+  - Try a tabular transformer approach, e.g. [PyTorch Tabular](https://github.com/manujosephv/pytorch_tabular).  
+
+---
+
+
+## ⚙️ Baseline Functions
+
+To help you get started, the notebook provides baseline functions for training and evaluating models:
+
+- `baseline_aggregation(df)`  
+  Aggregates transaction data into basic per-customer features (`count`, `sum`, `unique MCC/tr_type`). Returns `(X, y)`.
+
+- `fit_predict_rf(X_train, y_train, X_val, y_val, X_test)`  
+  Fits a **Random Forest classifier** on the training set and returns predicted probabilities and binary labels for the test set.
+
+- `eval(y_true, y_pred, y_pred_proba)`  
+  Computes evaluation metrics:
+  - ROC-AUC
+  - Accuracy
+  - Precision
+  - Recall
