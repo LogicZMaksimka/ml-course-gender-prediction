@@ -6,7 +6,7 @@ The goal of this homework is to **predict customer gender** based on their trans
 You will need to **aggregate transaction data into features**, train various machine learning models, and evaluate their performance.  
 
 
-- **Baseline Goal:** Achieve at least **0.86 ROC-AUC** on the test set.  
+- **Baseline Goal:** Achieve at least **0.86 ROC-AUC** and **0.78 accuracy** on the test set.  
 ---
 
 ## 📊 Dataset Details  
