@@ -86,22 +86,17 @@ All the code you need should be written in gender_prediction.ipynb, and all the 
 ---
 
 ### 2. 📈 Model Training & Evaluation
-- Train and compare multiple algorithms:
+- Train and compare multiple classic ML algorithms:
   - Random Forest
   - Support Vector Machine (SVM)
   - XGBoost / CatBoost
-  - Neural net models
+
+- Experiment with full transaction sequences instead of aggregated features:
   - RNNs (LSTM/GRU)
-  - Tabular transformers (optional)
+  - Tabular transformers ([PyTorch Tabular](https://github.com/manujosephv/pytorch_tabular)).  
 - Perform hyperparameter tuning using GridSearchCV or RandomizedSearchCV
 - Visualize the results of the hyperparameter search
-- Goal: achieve ROC AUC > 0.86
-
----
-
-### 3. Extra Points (Optional)
-- Experiment with full transaction sequences instead of aggregated features:
-  - Try a tabular transformer approach, e.g. [PyTorch Tabular](https://github.com/manujosephv/pytorch_tabular).  
+- Goal: achieve ROC AUC > 0.86 and accuracy > 0.78
 
 ---
 
