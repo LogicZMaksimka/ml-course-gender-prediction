@@ -22,7 +22,7 @@ It is split into **70% train, 10% validation, and 20% test** by `customer_id`.
 | `tr_type`       | int64           | Transaction type |
 | `amount`        | float64         | Transaction amount (can be negative or positive) |
 | `term_id`       | object          | Terminal ID where the transaction occurred (NaNs replaced with `-1`) |
-| `gender`        | int64           | Target variable: 0 (male), 1 (female) |
+| `gender`        | int64           | Target variable: 0 (female), 1 (male) |
 | `tr_type_desc`  | object          | Description of transaction type (63 unique values) |
 | `mcc_code_desc` | object          | Description of merchant category (184 unique values) |
 | `day`           | int64           | Days since reference date (derived from `tr_datetime`) |
